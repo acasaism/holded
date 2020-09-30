@@ -1,6 +1,5 @@
-require "holded/version"
+require 'holded/request'
+require 'holded/api_request'
 
 module Holded
-  class Error < StandardError; end
-  # Your code goes here...
 end
