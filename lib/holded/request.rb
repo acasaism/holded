@@ -1,11 +1,11 @@
 module Holded
   class Request
-    
+
     attr_accessor :api_key
 
     def initialize(api_key: nil)
       @path_parts = []
-      @api_key = api_key || self.class.api_key || ENV['HOLDED_API_KEY']
+      @api_key    = api_key || self.class.api_key || ENV['HOLDED_API_KEY']
     end
 
     ##
@@ -21,6 +21,10 @@ module Holded
       @path_parts << method.to_s.gsub("_", "-").downcase
       @path_parts << args if args.length > 0
       self
+    end
+
+    def path
+      @path_parts.join('/')
     end
 
     def create(params: nil, headers: nil, body: nil)
@@ -52,12 +56,12 @@ module Holded
     ensure
       reset_path_parts
     end
-    
+
     protected
-    
+
     def reset_path_parts
       @path_parts = []
     end
-    
+
   end
 end
