@@ -20,6 +20,7 @@ module Holded
     def method_missing(method, *args)
       @path_parts << method.to_s.gsub("_", "-").downcase
       @path_parts << args if args.length > 0
+      @path_parts << 'v1' if @path_parts.length == 1
       self
     end
 
@@ -27,32 +28,26 @@ module Holded
       @path_parts.join('/')
     end
 
-    def create(params: nil, headers: nil, body: nil)
-      APIRequest.new(builder: self).post(params: params, headers: headers, body: body)
+    def create(params: nil, body: nil)
+      APIRequest.new(builder: self).post(params: params, body: body)
     ensure
       reset_path_parts
     end
 
-    def update(params: nil, headers: nil, body: nil)
-      APIRequest.new(builder: self).patch(params: params, headers: headers, body: body)
+    def update(params: nil, body: nil)
+      APIRequest.new(builder: self).put(params: params, body: body)
     ensure
       reset_path_parts
     end
 
-    def upsert(params: nil, headers: nil, body: nil)
-      APIRequest.new(builder: self).put(params: params, headers: headers, body: body)
+    def search(params: nil)
+      APIRequest.new(builder: self).get(params: params)
     ensure
       reset_path_parts
     end
 
-    def retrieve(params: nil, headers: nil)
-      APIRequest.new(builder: self).get(params: params, headers: headers)
-    ensure
-      reset_path_parts
-    end
-
-    def delete(params: nil, headers: nil)
-      APIRequest.new(builder: self).delete(params: params, headers: headers)
+    def delete(params: nil)
+      APIRequest.new(builder: self).delete(params: params)
     ensure
       reset_path_parts
     end
