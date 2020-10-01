@@ -3,9 +3,10 @@ module Holded
 
     attr_accessor :api_key
 
-    def initialize(api_key: nil)
-      @path_parts = []
-      @api_key    = api_key || self.class.api_key || ENV['HOLDED_API_KEY']
+    def initialize(api_key: nil, api_version: 'v1')
+      @path_parts  = []
+      @api_key     = api_key || self.class.api_key || ENV['HOLDED_API_KEY']
+      @api_version = api_version
     end
 
     ##
@@ -20,7 +21,7 @@ module Holded
     def method_missing(method, *args)
       @path_parts << method.to_s.gsub("_", "-").downcase
       @path_parts << args if args.length > 0
-      @path_parts << 'v1' if @path_parts.length == 1
+      @path_parts << @api_version if @path_parts.length == 1
       self
     end
 
