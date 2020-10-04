@@ -14,23 +14,25 @@ module Holded
     end
 
     def get(params: nil)
+      validate_api_key
       request = Net::HTTP::Get.new(@url, build_headers)
       @http.request(request)
     end
 
     def post(params: nil, body: nil)
+      validate_api_key
       request = Net::HTTP::Post.new(@url, build_headers)
       @http.request(request)
     end
 
     def put(params: nil, body: nil)
-      p '******Put ApiRequest'
+      validate_api_key
       request = Net::HTTP::Put.new(@url, build_headers)
       @http.request(request)
     end
 
     def delete(params: nil)
-      p '******Delete ApiRequest'
+      validate_api_key
       request = Net::HTTP::Delete.new(@url, build_headers)
       @http.request(request)
     end
@@ -57,6 +59,11 @@ module Holded
     end
 
     protected
+
+    def validate_api_key
+      api_key = self.api_key
+      raise Exceptions::APIKeyNotFoundError, 'You must set an api_key' unless api_key
+    end
 
     def api_key
       @request_builder.api_key
