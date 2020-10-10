@@ -29,14 +29,14 @@ module Holded
       @path_parts.join('/')
     end
 
-    def create(params: nil, body: nil)
-      APIRequest.new(builder: self).post(params: params, body: body)
+    def create(params: nil)
+      APIRequest.new(builder: self).post(params: params)
     ensure
       reset_path_parts
     end
 
     def update(params: nil, body: nil)
-      APIRequest.new(builder: self).put(params: params, body: body)
+      APIRequest.new(builder: self).put(params: params)
     ensure
       reset_path_parts
     end

@@ -1,7 +1,7 @@
+require 'json'
 require 'uri'
 require 'net/http'
 require 'openssl'
-require 'json'
 
 module Holded
   class APIRequest
@@ -18,28 +18,32 @@ module Holded
       validate_api_key
       request = Net::HTTP::Get.new(@url, build_headers)
       request = configure_request(request: request, params: params)
-      @http.request(request)
+      response = @http.request(request)
+      parse_response(response: response)
     end
 
     def post(params: nil)
       validate_api_key
       request = Net::HTTP::Post.new(@url, build_headers)
       request = configure_request(request: request, params: params)
-      @http.request(request)
+      response = @http.request(request)
+      parse_response(response: response)
     end
 
     def put(params: nil)
       validate_api_key
       request = Net::HTTP::Put.new(@url, build_headers)
       request = configure_request(request: request, params: params)
-      @http.request(request)
+      response = @http.request(request)
+      parse_response(response: response)
     end
 
     def delete(params: nil)
       validate_api_key
       request = Net::HTTP::Delete.new(@url, build_headers)
       request = configure_request(request: request, params: params)
-      @http.request(request)
+      response = @http.request(request)
+      parse_response(response: response)
     end
 
 
@@ -66,6 +70,10 @@ module Holded
     def configure_request(request:, params: nil)
       request.body = params.to_json if params
       request
+    end
+
+    def parse_response(response:)
+      Response.new(request_response: response)
     end
 
     protected
