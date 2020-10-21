@@ -5,6 +5,10 @@ module Holded
 
     def initialize(api_key: nil, api_version: 'v1')
       @path_parts  = []
+      p '*****Dentro'
+      p self
+      p self.api_key
+      p Holded.configuration.api_key
       @api_key     = api_key || self.class.api_key || ENV['HOLDED_API_KEY']
       @api_version = api_version
     end
